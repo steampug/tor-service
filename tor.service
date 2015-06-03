@@ -1,0 +1,35 @@
+[Unit]
+Description=Anonymizing Overlay Network
+After=network.target
+
+[Service]
+User=tor
+Group=tor
+
+Type=forking
+
+# Private tmp is ALWAYS a good idea especially with services like this... 
+PrivateTmp=yes
+ 
+# This is important; ensures permission-related exec options (User, Group) 
+# are only applied to the process specified in ExecStart, not ExecStartPre etc.
+PermissionsStartOnly=true
+
+# This all is executed before the actual tor process is initiated
+ExecStartPre=-/usr/bin/mkdir /var/run/tor
+ExecStartPre=/usr/bin/cp /etc/tor/torrc /var/run/tor
+ExecStartPre=/usr/bin/chmod a-wx,go-rwx /var/run/tor/torrc
+ExecStartPre=/usr/bin/chown -R tor:tor /var/run/tor	
+
+# Actual tor process is started
+ExecStart=/usr/bin/tor -f /var/run/tor/torrc
+
+ExecReload=/usr/bin/kill -HUP $MAINPID
+
+PIDFile=/var/run/tor/tor.pid
+KillSignal=SIGINT
+LimitNOFILE=8192
+PrivateDevices=yes
+
+[Install]
+WantedBy=multi-user.target

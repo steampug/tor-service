@@ -1,0 +1,60 @@
+# This is a tor configuration made by arm. To change the configuration by hand
+# edit this file then either...
+# - tell arm to reset tor by pressing 'x'
+# - run 'pkill -sighup tor'
+# - or restart tor
+#
+# Descriptions of all of these configuration attributes (and many more) are
+# available in the tor man page.
+# vim:set ts=2 sw=2 et:
+
+DataDirectory /var/lib/tor/   		# Location of tor's runtime data
+Log notice file /var/log/tor.log	# Location where tor writes its logs
+ControlPort 9051					# Used by programs eg vidalia, arm, .. to control tor
+CookieAuthentication 1        		# Method by which controller programs authenticate
+
+RunAsDaemon 1                 		# Tor daemonizes itself & runs as a background service
+#User tor                     		# Process runs under this user (commented because systemd takes care of this)
+PidFile /var/run/tor/tor.pid 		# Location where tor writes its PID
+
+ClientOnly 1						# Ensures we aren't used as a relay or directory mirror
+
+ProtocolWarnings 1			  		# Toggles if protocol errors give warnings or not
+SafeSocks 1                   		# Reject "unsafe" connections (DNS leaks, etc.)
+TestSocks 1					  		# Test SOCKS connections and log the results
+#WarnUnsafeSocks 1			  		# Print warnings when an unsafe SOCKS conn. is detected
+
+SocksPort 127.0.0.1:9150      		# Privoxy HTTP forward
+
+## BAD NODES - http://xqz3u5drneuzhaeo.onion/users/badtornodes
+### The following list provides information about relays that have been checked
+### for injecting content over HTTP-connections.
+ExcludeNodes $bbefffa108ad16b8e5f0323cf086811c17190bba, $2d5e2ca4b22809379b36028da5b7cb453671e5b6, \
+             $5eb6c2094c4ac42d3fbd1cba25fc3b4196e2ff83, $c813d142c092ac01f2f20970dba7086b8a7e52a3, \
+             $9c8bb2a38d99283c4acefb1ad4f52a23413787d6, $7c18ee0cb68a259ba6ce0001f2f7b8180a875a6d, \
+             $47bbde163dc80f5f5e666698ab4b97900dcff929, $acbacb92581c078cc6e285075cfef467e9ccf76a, \
+             $5d84518804ab4b032531b2647603fe1c5e569c26, $2d9a667f3d44f2a3296800bdd310c3747dc8f465, \
+             $1824cc33499fd55920a804c66bbaa05669d43117, $4205c064e59aaafeadd2ace80d705183c4f2758a, \
+             $14f04a0861b913bfcac1eabac74a1f47bdf41f3a, $1f9803d6ade967718912622ac876feef1088cfaa, \
+             $90804a60f89789d44a16a88596598fbc8f5e177b, $0d4f72f90e50b6f5967c4c7267354b22fa48ea86, \
+             $eda829cba890bbb30fe5be04779d83044126ba67, $c0e236c6e9a6b29efe247dcbc8a1eaaac247770c, \
+             $192fa9d6e9a27024f6e733a6196d33cc8425d1c9, $fe0551589d19dcbeb193fe78a9a003a8a2fc09aa, \
+             $2539ea281de61d5b289f580af52dde9a42cdae36, $6c7c819f808ac125c69e1d981f350dcba44da8b5, \
+             $35bdc6486420efd442c985d8d3c074988bfe544b, $43be706e24143ab6b3b86dbf7cd4fde1e0c4caf1, \
+             $103827708bd078eec737137585eccb5bcea6424b, $8ff73b8fbfbf2ccb52a8e46a515418f97a69c812, \
+             $94cbe5df362142d06de73b102e054442cfe627c9, $f2244a8d5da14359cda1dab70f328e62e74e9837, \
+             $14be6d0789a234bc4c1866b809d8062d22ee38cf, $9e6ee731a0dec6c65bb4bfb8dd2be461b6e58144, \
+             $2cb53ff756483b738e7b0b39ada3453b5259a1f3, $0077b6576a668f861f9f41fdf8da7795c8bb86d5, \
+             $c9be2c39ca4e6f120293c80d2cbe2bc34f3a1f30, $bcc93397b50c1ac75c94452954a5bcda01f47215, \
+             $ee25656d71db9a82c8efd8c4a99ddbec89f24a67, $1caa0aff0a8236fa7f83f392c11b76cf7eeaac60, \
+             $28151be14cb5c22a236163c3e97409d6fd607356, $1b777f2c879c76fc529d1ec63508aad0e1759e79, \
+             $53c4c4e1741ca61ad4f09cc9eae8abe1fd92f08b
+
+#Nickname					  		# Nickname public
+#ORPort 9030                   		# port used for relaying traffic
+#DirPort auto                  		# port used for mirroring directory information
+#RelayBandwidthRate 1 MB       		# limit for the bandwidth we'll use to relay
+#RelayBandwidthBurst 2 MB      		# maximum rate when relaying bursts of traffic
+#AccountingMax 1 GB            		# maximum bandwidth used per month
+#ExitPolicy reject *:*         		# prevents us from connecting to non-relays
+#
